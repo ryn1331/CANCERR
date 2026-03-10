@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Loader2, Lock, Mail, ArrowRight, Activity } from 'lucide-react';
+import { Loader2, Lock, Mail, ArrowRight, Activity, Shield, Fingerprint } from 'lucide-react';
 import RNCLogo from '@/components/RNCLogo';
 
 /* ───── floating particle component ───── */
@@ -145,12 +145,22 @@ export default function Auth() {
       </div>
 
       {/* ─── RIGHT PANEL — login form ─── */}
-      <div className="flex-1 lg:w-1/2 flex items-center justify-center bg-background relative">
-        {/* subtle bg pattern */}
-        <div className="absolute inset-0 pattern-dots opacity-50" />
+      <div className="flex-1 lg:w-1/2 flex items-center justify-center relative overflow-hidden bg-background">
+        {/* decorative gradient orbs */}
+        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-primary/[0.07] via-cyan-400/[0.05] to-transparent blur-3xl" />
+        <div className="absolute -bottom-40 -left-32 w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-emerald-400/[0.06] via-blue-400/[0.04] to-transparent blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-b from-primary/[0.03] to-transparent blur-3xl" />
 
-        <div className={`relative z-10 w-full max-w-[600px] px-6 md:px-14 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          {/* Mobile logo (visible on < lg) */}
+        {/* fine grid */}
+        <div className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: `linear-gradient(hsl(var(--border)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--border)) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+          }}
+        />
+
+        <div className={`relative z-10 w-full max-w-[400px] px-6 md:px-8 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          {/* Mobile logo */}
           <div className="lg:hidden text-center mb-10">
             <div className="text-primary mx-auto mb-3">
               <RNCLogo size={64} />
@@ -160,22 +170,30 @@ export default function Auth() {
           </div>
 
           {/* Form header */}
-          <div className="mb-10">
-            <h2 className="font-display text-3xl font-bold text-foreground tracking-tight">
-              Bienvenue
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-primary/[0.08] text-primary text-[11px] font-medium mb-4 border border-primary/10">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Système opérationnel
+            </div>
+            <h2 className="font-display text-2xl font-bold text-foreground tracking-tight leading-tight">
+              Connexion sécurisée
             </h2>
-            <p className="text-muted-foreground text-base mt-2">
-              Connectez-vous pour accéder à votre espace
+            <p className="text-muted-foreground text-sm mt-1.5 leading-relaxed">
+              Accédez à votre espace du registre national
             </p>
           </div>
 
           {/* Form card */}
-          <div className="bg-card rounded-2xl border border-border/60 p-10 md:p-12 shadow-[0_8px_40px_-12px_hsl(215_30%_12%_/_0.1)]">
-            <form onSubmit={handleSubmit} className="space-y-7">
-              <div className="space-y-2.5">
-                <Label htmlFor="email" className="text-sm font-medium mb-1">Adresse email</Label>
-                <div className="relative">
-                  <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60" />
+          <div className="bg-card/80 backdrop-blur-xl rounded-xl border border-border/60 p-6 shadow-[0_1px_1px_hsl(0_0%_0%/0.04),0_4px_8px_hsl(0_0%_0%/0.04),0_16px_32px_hsl(0_0%_0%/0.04),0_32px_64px_hsl(0_0%_0%/0.02)] ring-1 ring-border/10">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="email" className="text-[11px] font-semibold text-foreground/80 uppercase tracking-wider">Email</Label>
+                <div className="relative group">
+                  <div className="absolute left-0 top-0 bottom-0 w-10 flex items-center justify-center pointer-events-none">
+                    <div className="w-7 h-7 rounded-md bg-primary/[0.06] group-focus-within:bg-primary/[0.12] flex items-center justify-center transition-colors duration-200">
+                      <Mail size={13} className="text-primary/60 group-focus-within:text-primary transition-colors duration-200" />
+                    </div>
+                  </div>
                   <Input
                     id="email"
                     type="email"
@@ -183,15 +201,19 @@ export default function Auth() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="medecin@chu-tlemcen.dz"
                     required
-                    className="pl-12 h-[52px] bg-muted/40 border-border/60 rounded-xl text-base placeholder:text-muted-foreground/40 focus:bg-background focus:border-primary/40 focus:ring-2 focus:ring-primary/10 transition-all"
+                    className="pl-12 h-10 bg-muted/50 border-border/60 rounded-lg text-sm placeholder:text-muted-foreground/35 focus:bg-background focus:border-primary/30 focus:ring-[3px] focus:ring-primary/[0.08] transition-all duration-200"
                   />
                 </div>
               </div>
 
-              <div className="space-y-2.5">
-                <Label htmlFor="password" className="text-sm font-medium mb-1">Mot de passe</Label>
-                <div className="relative">
-                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/60" />
+              <div className="space-y-1.5">
+                <Label htmlFor="password" className="text-[11px] font-semibold text-foreground/80 uppercase tracking-wider">Mot de passe</Label>
+                <div className="relative group">
+                  <div className="absolute left-0 top-0 bottom-0 w-10 flex items-center justify-center pointer-events-none">
+                    <div className="w-7 h-7 rounded-md bg-primary/[0.06] group-focus-within:bg-primary/[0.12] flex items-center justify-center transition-colors duration-200">
+                      <Lock size={13} className="text-primary/60 group-focus-within:text-primary transition-colors duration-200" />
+                    </div>
+                  </div>
                   <Input
                     id="password"
                     type="password"
@@ -200,32 +222,50 @@ export default function Auth() {
                     placeholder="••••••••"
                     required
                     minLength={6}
-                    className="pl-12 h-[52px] bg-muted/40 border-border/60 rounded-xl text-base placeholder:text-muted-foreground/40 focus:bg-background focus:border-primary/40 focus:ring-2 focus:ring-primary/10 transition-all"
+                    className="pl-12 h-10 bg-muted/50 border-border/60 rounded-lg text-sm placeholder:text-muted-foreground/35 focus:bg-background focus:border-primary/30 focus:ring-[3px] focus:ring-primary/[0.08] transition-all duration-200"
                   />
                 </div>
               </div>
 
-              <Button
-                type="submit"
-                className="w-full h-[52px] rounded-xl text-base font-semibold gap-2 bg-gradient-to-r from-primary to-[hsl(200,75%,50%)] hover:from-primary/90 hover:to-[hsl(200,75%,45%)] shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-0.5"
-                disabled={loading}
-              >
-                {loading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <>
-                    Se connecter
-                    <ArrowRight size={16} />
-                  </>
-                )}
-              </Button>
+              <div className="pt-0.5">
+                <Button
+                  type="submit"
+                  className="w-full h-10 rounded-lg text-sm font-semibold gap-2 bg-gradient-to-r from-primary to-[hsl(200,75%,50%)] hover:from-primary/90 hover:to-[hsl(200,75%,45%)] text-primary-foreground shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 hover:-translate-y-[1px] active:translate-y-0"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>
+                      Se connecter
+                      <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                    </>
+                  )}
+                </Button>
+              </div>
             </form>
           </div>
 
-          <p className="text-xs text-muted-foreground/60 text-center mt-6 leading-relaxed">
+          {/* Trust badges */}
+          <div className="mt-6 flex items-center justify-center gap-5">
+            <div className="flex items-center gap-1.5 text-muted-foreground/45">
+              <Shield size={13} />
+              <span className="text-[11px] font-medium">Loi 18-07</span>
+            </div>
+            <div className="w-px h-3 bg-border/60" />
+            <div className="flex items-center gap-1.5 text-muted-foreground/45">
+              <Fingerprint size={13} />
+              <span className="text-[11px] font-medium">Chiffrement AES-256</span>
+            </div>
+            <div className="w-px h-3 bg-border/60" />
+            <div className="flex items-center gap-1.5 text-muted-foreground/45">
+              <Lock size={12} />
+              <span className="text-[11px] font-medium">ANPDP</span>
+            </div>
+          </div>
+
+          <p className="text-[11px] text-muted-foreground/35 text-center mt-4">
             Contactez l'administrateur pour obtenir vos identifiants
-            <br />
-            <span className="text-muted-foreground/40">Conforme Loi 18-07 & 25-11 ANPDP</span>
           </p>
         </div>
       </div>
